@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-15T05:04:20.732Z",
+  "updatedAt": "2026-01-15T05:29:33.475Z",
   "createdAt": "2026-01-10T16:16:10.189Z",
   "id": "aw1Z0944wtQvvrm7",
   "name": "ibon-web",
@@ -29,9 +29,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Mensaje del usuario:\n{{ $json.mensajeTexto }}\n  ---\n  Contexto de la conversación:\n  - Nombre: {{ $('Set-Msg-Data').item.json.nombre }}\n  - Tipo de mensaje: {{ $json.messageType === 'audio' ? 'Audio transcrito' : 'Texto escrito' }}\n  - Plataforma: {{ $json.platform || 'Web' }}\n  - Fecha y Hora Actual: {{ $json.horaFormateada }} {{ $json.timestamp ? new Date($json.timestamp).toLocaleString('es-CO', { timeZone: 'America/Bogota' }) : 'Ahora' }}",
+        "text": "=Mensaje del usuario:\n{{ $json.mensajeTexto }}\n  ---\n  Contexto de la conversación:\n  - Nombre: {{ $json.nombre }}\n  - Tipo de mensaje: {{ $json.messageType === 'audio' ? 'Audio transcrito' : 'Texto escrito' }}\n  - Plataforma: {{ $json.platform || 'Web' }}\n  - Fecha y Hora Actual: {{ $json.horaFormateada }} {{ $json.timestamp ? new Date($json.timestamp).toLocaleString('es-CO', { timeZone: 'America/Bogota' }) : 'Ahora' }}",
         "options": {
-          "systemMessage": "={{ $('Set-Msg-Data').item.json.instr_personalidad }}\n---\n{{ $('Set-Msg-Data').item.json.instr_negocio }}\n---\n{{ $('Set-Msg-Data').item.json.instr_situaciones }}\n---\n{{ $('Set-Msg-Data').item.json.instr_protocolo }}\n---"
+          "systemMessage": "={{ $json.instr_personalidad }}\n---\n{{ $json.instr_negocio }}\n---\n{{ $json.instr_situaciones }}\n---\n{{ $json.instr_protocolo }}\n---"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -71,7 +71,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Set-Msg-Data').item.json.sessionId }}",
+        "sessionKey": "={{ $json.sessionId }}",
         "contextWindowLength": 20
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
@@ -669,7 +669,7 @@
           "conditions": [
             {
               "id": "audio-enabled-condition",
-              "leftValue": "={{ $('Set-Msg-Data').item.json.audioEnabled }}",
+              "leftValue": "={{ $json.audioEnabled }}",
               "rightValue": true,
               "operator": {
                 "type": "boolean",
@@ -1123,7 +1123,7 @@
     {
       "parameters": {
         "sessionIdType": "customKey",
-        "sessionKey": "={{ $('Set-Msg-Data').item.json.sessionId }}"
+        "sessionKey": "={{ $json.sessionId }}"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
@@ -3071,9 +3071,9 @@
       }
     ]
   },
-  "versionId": "2407108e-c7d4-4cf2-87f4-aeea99905d48",
-  "activeVersionId": "2407108e-c7d4-4cf2-87f4-aeea99905d48",
-  "versionCounter": 47,
+  "versionId": "b7415c1f-e533-4c93-8076-00d5dd69df9e",
+  "activeVersionId": "b7415c1f-e533-4c93-8076-00d5dd69df9e",
+  "versionCounter": 49,
   "triggerCount": 1,
   "shared": [
     {
@@ -3144,9 +3144,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-15T05:04:20.737Z",
-    "createdAt": "2026-01-15T05:04:20.737Z",
-    "versionId": "2407108e-c7d4-4cf2-87f4-aeea99905d48",
+    "updatedAt": "2026-01-15T05:29:33.479Z",
+    "createdAt": "2026-01-15T05:29:33.479Z",
+    "versionId": "b7415c1f-e533-4c93-8076-00d5dd69df9e",
     "workflowId": "aw1Z0944wtQvvrm7",
     "nodes": [
       {
@@ -3171,9 +3171,9 @@
       {
         "parameters": {
           "promptType": "define",
-          "text": "=Mensaje del usuario:\n{{ $json.mensajeTexto }}\n  ---\n  Contexto de la conversación:\n  - Nombre: {{ $('Set-Msg-Data').item.json.nombre }}\n  - Tipo de mensaje: {{ $json.messageType === 'audio' ? 'Audio transcrito' : 'Texto escrito' }}\n  - Plataforma: {{ $json.platform || 'Web' }}\n  - Fecha y Hora Actual: {{ $json.horaFormateada }} {{ $json.timestamp ? new Date($json.timestamp).toLocaleString('es-CO', { timeZone: 'America/Bogota' }) : 'Ahora' }}",
+          "text": "=Mensaje del usuario:\n{{ $json.mensajeTexto }}\n  ---\n  Contexto de la conversación:\n  - Nombre: {{ $json.nombre }}\n  - Tipo de mensaje: {{ $json.messageType === 'audio' ? 'Audio transcrito' : 'Texto escrito' }}\n  - Plataforma: {{ $json.platform || 'Web' }}\n  - Fecha y Hora Actual: {{ $json.horaFormateada }} {{ $json.timestamp ? new Date($json.timestamp).toLocaleString('es-CO', { timeZone: 'America/Bogota' }) : 'Ahora' }}",
           "options": {
-            "systemMessage": "={{ $('Set-Msg-Data').item.json.instr_personalidad }}\n---\n{{ $('Set-Msg-Data').item.json.instr_negocio }}\n---\n{{ $('Set-Msg-Data').item.json.instr_situaciones }}\n---\n{{ $('Set-Msg-Data').item.json.instr_protocolo }}\n---"
+            "systemMessage": "={{ $json.instr_personalidad }}\n---\n{{ $json.instr_negocio }}\n---\n{{ $json.instr_situaciones }}\n---\n{{ $json.instr_protocolo }}\n---"
           }
         },
         "type": "@n8n/n8n-nodes-langchain.agent",
@@ -3213,7 +3213,7 @@
       {
         "parameters": {
           "sessionIdType": "customKey",
-          "sessionKey": "={{ $('Set-Msg-Data').item.json.sessionId }}",
+          "sessionKey": "={{ $json.sessionId }}",
           "contextWindowLength": 20
         },
         "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
@@ -3811,7 +3811,7 @@
             "conditions": [
               {
                 "id": "audio-enabled-condition",
-                "leftValue": "={{ $('Set-Msg-Data').item.json.audioEnabled }}",
+                "leftValue": "={{ $json.audioEnabled }}",
                 "rightValue": true,
                 "operator": {
                   "type": "boolean",
@@ -4265,7 +4265,7 @@
       {
         "parameters": {
           "sessionIdType": "customKey",
-          "sessionKey": "={{ $('Set-Msg-Data').item.json.sessionId }}"
+          "sessionKey": "={{ $json.sessionId }}"
         },
         "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
         "typeVersion": 1.3,
