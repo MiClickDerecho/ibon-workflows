@@ -95,7 +95,7 @@ Todos los chats de las 4 landings del ecosistema Ibon Palacio estan conectados a
 - **Estado:** Activo
 - **Creado:** 2026-01-10
 - **Actualizado:** 2026-01-15
-- **Total Nodos:** 54
+- **Total Nodos:** 51
 
 ### Arquitectura del Workflow
 
@@ -175,14 +175,28 @@ Los nodos `Random Saludo` y `Random Despedida` seleccionan mensajes segun `sourc
 
 | Tool | Tipo | Funcion |
 |------|------|---------|
+| check-availability | HTTP Request | Consulta horas disponibles para agendar cita |
+| create-appointment | HTTP Request | Crea cita en BD + envia email confirmacion |
 | mail-agent | Agent Tool | Envio de emails via Gmail |
 | calendar-agent | Agent Tool | Gestion de Google Calendar |
-| Get_consultoria | Google Sheets | Datos de consultoria |
-| Get_soft_medida | Google Sheets | Datos de software a medida |
-| Get_academias | Google Sheets | Datos de academias |
-| Get_pos | Google Sheets | Datos de POS |
-| Get_fact_electronica | Google Sheets | Datos de facturacion electronica |
-| Get_politicos | Google Sheets | Datos de politicos |
+| get-data-ibon | Google Sheets | Datos de Ibon Palacio |
+
+### Agendamiento de Citas via Chat
+
+La IA puede agendar citas directamente desde el chat usando los tools:
+
+**Flujo:**
+1. Usuario: "Quiero agendar una cita"
+2. IA usa `check-availability` para consultar horas disponibles
+3. IA solicita datos: nombre, correo, telefono, fecha, hora, motivo
+4. IA usa `create-appointment` para crear la cita
+5. Sistema envia email de confirmacion automatico con ICS
+
+**APIs usadas:**
+- `GET https://ibonpalacio.com/api/check-availability.php?fecha=YYYY-MM-DD`
+- `POST https://ibonpalacio.com/api/send-email.php`
+
+**Base de datos:** MySQL `jhtriqfo_ibondata` (tabla `citas`)
 
 ---
 
@@ -303,6 +317,7 @@ Los backups del workflow se guardan en este repositorio:
 | Archivo | Descripcion | Fecha |
 |---------|-------------|-------|
 | `ibon-web.json` | Version actual del workflow | Actualizado |
+| `ibon-web-backup-2026-01-15-pre-scheduling.json` | Antes de agregar tools de agendamiento | 2026-01-15 |
 | `ibon-web-backup-2026-01-15-switch-origin.json` | Version estable con Switch-Origin | 2026-01-15 |
 
 ### Restaurar un Backup
@@ -324,5 +339,7 @@ curl -X PUT "https://flow.miclickderecho.com/api/v1/workflows/aw1Z0944wtQvvrm7" 
 
 - **Fecha:** 2026-01-15
 - **Autor:** Claude Code
-- **Version:** 2.0
-- **Cambios:** Implementacion de Switch-Origin con instrucciones y saludos por sitio
+- **Version:** 3.0
+- **Cambios:**
+  - v2.0: Implementacion de Switch-Origin con instrucciones y saludos por sitio
+  - v3.0: Tools de agendamiento (check-availability, create-appointment) conectados a BD MySQL
