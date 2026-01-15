@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-15T04:18:41.394Z",
+  "updatedAt": "2026-01-15T05:04:20.732Z",
   "createdAt": "2026-01-10T16:16:10.189Z",
   "id": "aw1Z0944wtQvvrm7",
   "name": "ibon-web",
@@ -1007,14 +1007,14 @@
           "mappingMode": "defineBelow",
           "value": {
             "Timestamp": "={{ new Date().toISOString() }}",
-            "SessionID": "={{ $('Set-Msg-Data').item.json.sessionId }}",
-            "Nombre": "={{ $('Set-Msg-Data').item.json.nombre }}",
-            "Email": "={{ $('Set-Msg-Data').item.json.email }}",
+            "SessionID": "={{ $json.sessionId }}",
+            "Nombre": "={{ $json.nombre }}",
+            "Email": "={{ $json.email }}",
             "Categoría": "={{ $json.category }}",
-            "Mensaje Usuario": "={{ $('Set-Msg-Data').item.json.mensajeTexto }}",
-            "Audio": "={{ $('Set-Msg-Data').item.json.audioEnabled }}",
+            "Mensaje Usuario": "={{ $json.mensajeTexto }}",
+            "Audio": "={{ $json.audioEnabled }}",
             "Respuesta Bot": "={{ $json.aiResponse }}",
-            "IP": "={{ $('Set-Msg-Data').item.json.ip }}"
+            "IP": "={{ $json.ip }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -3071,9 +3071,9 @@
       }
     ]
   },
-  "versionId": "30581173-366e-40c5-9e94-99b8cf25644f",
-  "activeVersionId": "30581173-366e-40c5-9e94-99b8cf25644f",
-  "versionCounter": 45,
+  "versionId": "2407108e-c7d4-4cf2-87f4-aeea99905d48",
+  "activeVersionId": "2407108e-c7d4-4cf2-87f4-aeea99905d48",
+  "versionCounter": 47,
   "triggerCount": 1,
   "shared": [
     {
@@ -3097,7 +3097,7 @@
             "userId": "6a6248bb-26d6-4dab-ab7a-9fbdf101a997",
             "projectId": "LnlEO0P6XebbIkMy",
             "user": {
-              "updatedAt": "2026-01-14T20:17:24.000Z",
+              "updatedAt": "2026-01-15T05:00:03.000Z",
               "createdAt": "2025-10-01T02:15:09.867Z",
               "id": "6a6248bb-26d6-4dab-ab7a-9fbdf101a997",
               "email": "sistemas@miclickderecho.com",
@@ -3127,7 +3127,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-01-14",
+              "lastActiveAt": "2026-01-15",
               "isPending": false
             }
           }
@@ -3144,9 +3144,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-15T04:18:41.399Z",
-    "createdAt": "2026-01-15T04:18:41.399Z",
-    "versionId": "30581173-366e-40c5-9e94-99b8cf25644f",
+    "updatedAt": "2026-01-15T05:04:20.737Z",
+    "createdAt": "2026-01-15T05:04:20.737Z",
+    "versionId": "2407108e-c7d4-4cf2-87f4-aeea99905d48",
     "workflowId": "aw1Z0944wtQvvrm7",
     "nodes": [
       {
@@ -4149,14 +4149,14 @@
             "mappingMode": "defineBelow",
             "value": {
               "Timestamp": "={{ new Date().toISOString() }}",
-              "SessionID": "={{ $('Set-Msg-Data').item.json.sessionId }}",
-              "Nombre": "={{ $('Set-Msg-Data').item.json.nombre }}",
-              "Email": "={{ $('Set-Msg-Data').item.json.email }}",
+              "SessionID": "={{ $json.sessionId }}",
+              "Nombre": "={{ $json.nombre }}",
+              "Email": "={{ $json.email }}",
               "Categoría": "={{ $json.category }}",
-              "Mensaje Usuario": "={{ $('Set-Msg-Data').item.json.mensajeTexto }}",
-              "Audio": "={{ $('Set-Msg-Data').item.json.audioEnabled }}",
+              "Mensaje Usuario": "={{ $json.mensajeTexto }}",
+              "Audio": "={{ $json.audioEnabled }}",
               "Respuesta Bot": "={{ $json.aiResponse }}",
-              "IP": "={{ $('Set-Msg-Data').item.json.ip }}"
+              "IP": "={{ $json.ip }}"
             },
             "matchingColumns": [],
             "schema": [
