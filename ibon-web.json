@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-15T03:17:59.223Z",
+  "updatedAt": "2026-01-15T04:18:41.394Z",
   "createdAt": "2026-01-10T16:16:10.189Z",
   "id": "aw1Z0944wtQvvrm7",
   "name": "ibon-web",
@@ -19,8 +19,8 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -4704,
-        -464
+        -5328,
+        -496
       ],
       "id": "6edd994e-f171-437b-8e4c-4913a1206b28",
       "name": "Webhook",
@@ -531,8 +531,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4150,
-        50
+        -4592,
+        16
       ],
       "id": "4de304eb-c7ec-45c1-b63e-b2bf877e4849",
       "name": "Set-Msg-Data"
@@ -826,8 +826,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2,
       "position": [
-        -4128,
-        -464
+        -4016,
+        -432
       ],
       "id": "7c399f1d-2c5f-430a-864c-502a16d9059f",
       "name": "IF Clear Memory"
@@ -839,7 +839,7 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -3696,
+        -3808,
         -960
       ],
       "id": "f7796a3a-b67e-44bc-abed-f16e8cfab839",
@@ -1339,8 +1339,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4528,
-        -464
+        -5152,
+        -496
       ],
       "id": "classify-source-node-001",
       "name": "Classify-Source"
@@ -1458,8 +1458,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -4350,
-        -464
+        -4976,
+        -496
       ],
       "id": "switch-origin-node-001",
       "name": "Switch-Origin"
@@ -1631,8 +1631,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4150,
-        -700
+        -4592,
+        -752
       ],
       "id": "set-msg-ibon-landing-node",
       "name": "Set-Msg-IbonLanding"
@@ -1804,8 +1804,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4150,
-        -550
+        -4592,
+        -592
       ],
       "id": "set-msg-reto-gluteos-node",
       "name": "Set-Msg-RetoGluteos"
@@ -1977,8 +1977,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4150,
-        -400
+        -4592,
+        -448
       ],
       "id": "set-msg-palacio-fitness-node",
       "name": "Set-Msg-PalacioFitness"
@@ -2150,8 +2150,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4150,
-        -250
+        -4592,
+        -304
       ],
       "id": "set-msg-by-ibon-node",
       "name": "Set-Msg-ByIbon"
@@ -2323,25 +2323,22 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4150,
-        -100
+        -4592,
+        -144
       ],
       "id": "set-msg-whatsapp-node",
       "name": "Set-Msg-WhatsApp"
     },
     {
       "parameters": {
-        "mode": "combine",
-        "mergeByFields": {
-          "values": []
-        },
+        "mode": "append",
         "options": {}
       },
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        -3950,
-        -464
+        -4192,
+        -432
       ],
       "id": "merge-origin-node-001",
       "name": "Merge-Origins"
@@ -3074,9 +3071,9 @@
       }
     ]
   },
-  "versionId": "3844aef3-aa85-447d-bc9d-280064cb011c",
-  "activeVersionId": "3844aef3-aa85-447d-bc9d-280064cb011c",
-  "versionCounter": 39,
+  "versionId": "30581173-366e-40c5-9e94-99b8cf25644f",
+  "activeVersionId": "30581173-366e-40c5-9e94-99b8cf25644f",
+  "versionCounter": 45,
   "triggerCount": 1,
   "shared": [
     {
@@ -3147,9 +3144,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-15T03:17:59.269Z",
-    "createdAt": "2026-01-15T03:17:59.269Z",
-    "versionId": "3844aef3-aa85-447d-bc9d-280064cb011c",
+    "updatedAt": "2026-01-15T04:18:41.399Z",
+    "createdAt": "2026-01-15T04:18:41.399Z",
+    "versionId": "30581173-366e-40c5-9e94-99b8cf25644f",
     "workflowId": "aw1Z0944wtQvvrm7",
     "nodes": [
       {
@@ -3164,8 +3161,8 @@
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -4704,
-          -464
+          -5328,
+          -496
         ],
         "id": "6edd994e-f171-437b-8e4c-4913a1206b28",
         "name": "Webhook",
@@ -3676,8 +3673,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -4150,
-          50
+          -4592,
+          16
         ],
         "id": "4de304eb-c7ec-45c1-b63e-b2bf877e4849",
         "name": "Set-Msg-Data"
@@ -3971,8 +3968,8 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2,
         "position": [
-          -4128,
-          -464
+          -4016,
+          -432
         ],
         "id": "7c399f1d-2c5f-430a-864c-502a16d9059f",
         "name": "IF Clear Memory"
@@ -3984,7 +3981,7 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -3696,
+          -3808,
           -960
         ],
         "id": "f7796a3a-b67e-44bc-abed-f16e8cfab839",
@@ -4484,8 +4481,8 @@
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          -4528,
-          -464
+          -5152,
+          -496
         ],
         "id": "classify-source-node-001",
         "name": "Classify-Source"
@@ -4603,8 +4600,8 @@
         "type": "n8n-nodes-base.switch",
         "typeVersion": 3.2,
         "position": [
-          -4350,
-          -464
+          -4976,
+          -496
         ],
         "id": "switch-origin-node-001",
         "name": "Switch-Origin"
@@ -4776,8 +4773,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -4150,
-          -700
+          -4592,
+          -752
         ],
         "id": "set-msg-ibon-landing-node",
         "name": "Set-Msg-IbonLanding"
@@ -4949,8 +4946,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -4150,
-          -550
+          -4592,
+          -592
         ],
         "id": "set-msg-reto-gluteos-node",
         "name": "Set-Msg-RetoGluteos"
@@ -5122,8 +5119,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -4150,
-          -400
+          -4592,
+          -448
         ],
         "id": "set-msg-palacio-fitness-node",
         "name": "Set-Msg-PalacioFitness"
@@ -5295,8 +5292,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -4150,
-          -250
+          -4592,
+          -304
         ],
         "id": "set-msg-by-ibon-node",
         "name": "Set-Msg-ByIbon"
@@ -5468,25 +5465,22 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -4150,
-          -100
+          -4592,
+          -144
         ],
         "id": "set-msg-whatsapp-node",
         "name": "Set-Msg-WhatsApp"
       },
       {
         "parameters": {
-          "mode": "combine",
-          "mergeByFields": {
-            "values": []
-          },
+          "mode": "append",
           "options": {}
         },
         "type": "n8n-nodes-base.merge",
         "typeVersion": 3,
         "position": [
-          -3950,
-          -464
+          -4192,
+          -432
         ],
         "id": "merge-origin-node-001",
         "name": "Merge-Origins"
