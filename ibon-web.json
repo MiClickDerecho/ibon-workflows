@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-15T05:29:33.475Z",
+  "updatedAt": "2026-01-15T06:35:57.435Z",
   "createdAt": "2026-01-10T16:16:10.189Z",
   "id": "aw1Z0944wtQvvrm7",
   "name": "ibon-web",
@@ -1138,9 +1138,9 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
+          "value": "1cy1Gd2ZAnyMMpUlHu3qfdoaFJWBKjQA-L_gF1cTb97o",
           "mode": "list",
-          "cachedResultName": "Dataset Todos los servicios",
+          "cachedResultName": "data-ibon",
           "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
         },
         "sheetName": {
@@ -1159,172 +1159,7 @@
         144
       ],
       "id": "4d49405a-dfd2-4091-9e87-8a1cccde13fa",
-      "name": "Get_consultoria",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "9UCUTZmIRfNhsqZx",
-          "name": "GoogleSheets-dmms83"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-          "mode": "list",
-          "cachedResultName": "Dataset Todos los servicios",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1890889142,
-          "mode": "list",
-          "cachedResultName": "Softw.medida",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=1890889142"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        -1296,
-        144
-      ],
-      "id": "eba4c8bc-0ce4-459a-acd1-9d6fc9ecf06d",
-      "name": "Get_soft_medida",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "9UCUTZmIRfNhsqZx",
-          "name": "GoogleSheets-dmms83"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-          "mode": "list",
-          "cachedResultName": "Dataset Todos los servicios",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1750508475,
-          "mode": "list",
-          "cachedResultName": "Academias de conduccion",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=1750508475"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        -1168,
-        144
-      ],
-      "id": "1f335461-b256-481e-b681-eed8d38c981b",
-      "name": "Get_academias",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "9UCUTZmIRfNhsqZx",
-          "name": "GoogleSheets-dmms83"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-          "mode": "list",
-          "cachedResultName": "Dataset Todos los servicios",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 1959228478,
-          "mode": "list",
-          "cachedResultName": "POS",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=1959228478"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        -1040,
-        144
-      ],
-      "id": "6781c7da-2ae1-450a-9700-3eee931e8bfd",
-      "name": "Get_pos",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "9UCUTZmIRfNhsqZx",
-          "name": "GoogleSheets-dmms83"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-          "mode": "list",
-          "cachedResultName": "Dataset Todos los servicios",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 843990005,
-          "mode": "list",
-          "cachedResultName": "Facturacion Electronica",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=843990005"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        -912,
-        144
-      ],
-      "id": "22679245-3e5b-496c-b985-eee6e16c3923",
-      "name": "Get_fact_electronica",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "9UCUTZmIRfNhsqZx",
-          "name": "GoogleSheets-dmms83"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "documentId": {
-          "__rl": true,
-          "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-          "mode": "list",
-          "cachedResultName": "Dataset Todos los servicios",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": 769481918,
-          "mode": "list",
-          "cachedResultName": "Politicos",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=769481918"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheetsTool",
-      "typeVersion": 4.7,
-      "position": [
-        -736,
-        144
-      ],
-      "id": "173bdcfb-59f1-4168-b24f-da334971ba50",
-      "name": "Get_politicos",
+      "name": "get-data-ibon",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "9UCUTZmIRfNhsqZx",
@@ -2812,72 +2647,6 @@
         ]
       ]
     },
-    "Get_consultoria": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get_soft_medida": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get_academias": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get_pos": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get_fact_electronica": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get_politicos": {
-      "ai_tool": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Classify-Source": {
       "main": [
         [
@@ -3000,6 +2769,17 @@
           }
         ]
       ]
+    },
+    "get-data-ibon": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -3071,9 +2851,9 @@
       }
     ]
   },
-  "versionId": "b7415c1f-e533-4c93-8076-00d5dd69df9e",
-  "activeVersionId": "b7415c1f-e533-4c93-8076-00d5dd69df9e",
-  "versionCounter": 49,
+  "versionId": "243c5bb9-38fe-40b5-9d58-52a1f22757b3",
+  "activeVersionId": "243c5bb9-38fe-40b5-9d58-52a1f22757b3",
+  "versionCounter": 51,
   "triggerCount": 1,
   "shared": [
     {
@@ -3144,9 +2924,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-15T05:29:33.479Z",
-    "createdAt": "2026-01-15T05:29:33.479Z",
-    "versionId": "b7415c1f-e533-4c93-8076-00d5dd69df9e",
+    "updatedAt": "2026-01-15T06:35:57.448Z",
+    "createdAt": "2026-01-15T06:35:57.448Z",
+    "versionId": "243c5bb9-38fe-40b5-9d58-52a1f22757b3",
     "workflowId": "aw1Z0944wtQvvrm7",
     "nodes": [
       {
@@ -4280,9 +4060,9 @@
         "parameters": {
           "documentId": {
             "__rl": true,
-            "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
+            "value": "1cy1Gd2ZAnyMMpUlHu3qfdoaFJWBKjQA-L_gF1cTb97o",
             "mode": "list",
-            "cachedResultName": "Dataset Todos los servicios",
+            "cachedResultName": "data-ibon",
             "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
           },
           "sheetName": {
@@ -4301,172 +4081,7 @@
           144
         ],
         "id": "4d49405a-dfd2-4091-9e87-8a1cccde13fa",
-        "name": "Get_consultoria",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "9UCUTZmIRfNhsqZx",
-            "name": "GoogleSheets-dmms83"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-            "mode": "list",
-            "cachedResultName": "Dataset Todos los servicios",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 1890889142,
-            "mode": "list",
-            "cachedResultName": "Softw.medida",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=1890889142"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheetsTool",
-        "typeVersion": 4.7,
-        "position": [
-          -1296,
-          144
-        ],
-        "id": "eba4c8bc-0ce4-459a-acd1-9d6fc9ecf06d",
-        "name": "Get_soft_medida",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "9UCUTZmIRfNhsqZx",
-            "name": "GoogleSheets-dmms83"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-            "mode": "list",
-            "cachedResultName": "Dataset Todos los servicios",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 1750508475,
-            "mode": "list",
-            "cachedResultName": "Academias de conduccion",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=1750508475"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheetsTool",
-        "typeVersion": 4.7,
-        "position": [
-          -1168,
-          144
-        ],
-        "id": "1f335461-b256-481e-b681-eed8d38c981b",
-        "name": "Get_academias",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "9UCUTZmIRfNhsqZx",
-            "name": "GoogleSheets-dmms83"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-            "mode": "list",
-            "cachedResultName": "Dataset Todos los servicios",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 1959228478,
-            "mode": "list",
-            "cachedResultName": "POS",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=1959228478"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheetsTool",
-        "typeVersion": 4.7,
-        "position": [
-          -1040,
-          144
-        ],
-        "id": "6781c7da-2ae1-450a-9700-3eee931e8bfd",
-        "name": "Get_pos",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "9UCUTZmIRfNhsqZx",
-            "name": "GoogleSheets-dmms83"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-            "mode": "list",
-            "cachedResultName": "Dataset Todos los servicios",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 843990005,
-            "mode": "list",
-            "cachedResultName": "Facturacion Electronica",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=843990005"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheetsTool",
-        "typeVersion": 4.7,
-        "position": [
-          -912,
-          144
-        ],
-        "id": "22679245-3e5b-496c-b985-eee6e16c3923",
-        "name": "Get_fact_electronica",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "9UCUTZmIRfNhsqZx",
-            "name": "GoogleSheets-dmms83"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw",
-            "mode": "list",
-            "cachedResultName": "Dataset Todos los servicios",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 769481918,
-            "mode": "list",
-            "cachedResultName": "Politicos",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BuOiZ2l0T52Q3Xf34dyizBmZHktGCl9DCnqPtyuxlxw/edit#gid=769481918"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheetsTool",
-        "typeVersion": 4.7,
-        "position": [
-          -736,
-          144
-        ],
-        "id": "173bdcfb-59f1-4168-b24f-da334971ba50",
-        "name": "Get_politicos",
+        "name": "get-data-ibon",
         "credentials": {
           "googleSheetsOAuth2Api": {
             "id": "9UCUTZmIRfNhsqZx",
@@ -5954,72 +5569,6 @@
           ]
         ]
       },
-      "Get_consultoria": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get_soft_medida": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get_academias": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get_pos": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get_fact_electronica": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Get_politicos": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
       "Classify-Source": {
         "main": [
           [
@@ -6138,6 +5687,17 @@
             {
               "node": "IF Clear Memory",
               "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "get-data-ibon": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
               "index": 0
             }
           ]
