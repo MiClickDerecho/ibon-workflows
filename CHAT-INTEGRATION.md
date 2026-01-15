@@ -94,25 +94,71 @@ Todos los chats de las 4 landings del ecosistema Ibon Palacio estan conectados a
 - **Nombre:** ibon-web
 - **Estado:** Activo
 - **Creado:** 2026-01-10
-- **Actualizado:** 2026-01-13
-- **Total Nodos:** 46
+- **Actualizado:** 2026-01-15
+- **Total Nodos:** 54
 
 ### Arquitectura del Workflow
 
 ```
-[Webhook] --> [Switch-Data-Msg] --> [Text Classifier] --> [AI Agent]
-                    |                                          |
-                    v                                          v
-             [Transcribe-Audio]                    [mail-agent, calendar-agent]
-                    |                                          |
-                    v                                          v
-             [Set-Transcription]                   [Google Sheets Tools]
-                                                              |
-                                                              v
-                                                   [ElevenLabs TTS]
-                                                              |
-                                                              v
-                                                   [Respond to Webhook]
+[Webhook] --> [Classify-Source] --> [Switch-Origin] --> [Set-Msg-*] --> [Merge-Origins]
+                                          |
+                    ┌─────────────────────┼─────────────────────┐
+                    |           |         |         |           |
+                    v           v         v         v           v
+            [Set-Msg-     [Set-Msg-  [Set-Msg-  [Set-Msg-  [Set-Msg-
+             IbonLanding]  RetoGluteos] PalacioFitness] ByIbon] WhatsApp]
+                    |           |         |         |           |
+                    └─────────────────────┼─────────────────────┘
+                                          v
+                                   [Merge-Origins]
+                                          |
+                                          v
+                              [IF Clear Memory] --> [Text Classifier] --> [AI Agent]
+                                                                              |
+                                                                              v
+                                                               [mail-agent, calendar-agent]
+                                                                              |
+                                                                              v
+                                                               [ElevenLabs TTS]
+                                                                              |
+                                                                              v
+                                                               [Respond to Webhook]
+```
+
+### Nodos de Routing por Origen (Switch-Origin)
+
+El workflow detecta automaticamente desde que sitio proviene el mensaje y aplica instrucciones especificas.
+
+| Nodo | Tipo | Funcion |
+|------|------|---------|
+| Classify-Source | n8n-nodes-base.set | Detecta origen: Web vs WhatsApp, extrae `sourceProject` |
+| Switch-Origin | n8n-nodes-base.switch | Enruta segun `source.project` |
+| Set-Msg-IbonLanding | n8n-nodes-base.set | Instrucciones para portal general |
+| Set-Msg-RetoGluteos | n8n-nodes-base.set | Instrucciones para programa 28 dias |
+| Set-Msg-PalacioFitness | n8n-nodes-base.set | Instrucciones para gimnasio |
+| Set-Msg-ByIbon | n8n-nodes-base.set | Instrucciones para mentoria |
+| Set-Msg-WhatsApp | n8n-nodes-base.set | Instrucciones para WhatsApp |
+| Merge-Origins | n8n-nodes-base.merge | Combina todas las ramas |
+
+### Instrucciones por Sitio
+
+| Sitio | Enfoque | Tono |
+|-------|---------|------|
+| ibon-landing | Portal general, presenta 3 lineas de negocio | Acogedora, orientadora |
+| reto-gluteos | Programa 28 dias para gluteos | Motivadora, enfocada en resultados |
+| palacio-fitness | Gimnasio exclusivo para mujeres | Profesional, bienestar femenino |
+| by-ibon | Mentoria y empoderamiento | Firme, inspiradora |
+| whatsapp | Atencion directa | Conversacional, personal |
+
+### Saludos y Despedidas Personalizados
+
+Los nodos `Random Saludo` y `Random Despedida` seleccionan mensajes segun `sourceProject`:
+
+```javascript
+// Ejemplo de saludo para reto-gluteos
+"¡Buenos días, María! Bienvenida al Reto Glúteos.
+28 días para transformar tus glúteos con método y disciplina.
+¿Lista para el reto?"
 ```
 
 ### Nodos Principales
@@ -250,8 +296,33 @@ El webhook n8n tiene `allowedOrigins: "*"` configurado, permitiendo requests des
 
 ---
 
+## Backups
+
+Los backups del workflow se guardan en este repositorio:
+
+| Archivo | Descripcion | Fecha |
+|---------|-------------|-------|
+| `ibon-web.json` | Version actual del workflow | Actualizado |
+| `ibon-web-backup-2026-01-15-switch-origin.json` | Version estable con Switch-Origin | 2026-01-15 |
+
+### Restaurar un Backup
+
+```bash
+# 1. Copiar backup sobre el archivo principal
+cp ibon-web-backup-FECHA.json ibon-web.json
+
+# 2. Subir a n8n via API
+curl -X PUT "https://flow.miclickderecho.com/api/v1/workflows/aw1Z0944wtQvvrm7" \
+  -H "X-N8N-API-KEY: TU_API_KEY" \
+  -H "Content-Type: application/json" \
+  --data-binary @ibon-web.json
+```
+
+---
+
 ## Ultima Actualizacion
 
-- **Fecha:** 2026-01-13
+- **Fecha:** 2026-01-15
 - **Autor:** Claude Code
-- **Version:** 1.0
+- **Version:** 2.0
+- **Cambios:** Implementacion de Switch-Origin con instrucciones y saludos por sitio
