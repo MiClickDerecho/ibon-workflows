@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-01-15T08:23:08.235Z",
+  "updatedAt": "2026-01-15T08:39:32.444Z",
   "createdAt": "2026-01-10T16:16:10.189Z",
   "id": "aw1Z0944wtQvvrm7",
   "name": "ibon-web",
@@ -2175,92 +2175,88 @@
     },
     {
       "parameters": {
-        "method": "GET",
-        "url": "https://ibonpalacio.com/api/check-availability.php?fecha={fecha}",
-        "authentication": "none",
-        "sendBody": false,
-        "sendQuery": false,
-        "sendHeaders": false,
-        "placeholderDefinitions": {
-          "values": [
+        "name": "check_availability",
+        "description": "Consulta las horas disponibles para agendar una cita en una fecha específica. Requiere el parámetro 'fecha' en formato YYYY-MM-DD (ejemplo: 2026-01-20). Devuelve las horas disponibles y ocupadas para ese día.",
+        "jsCode": "// Obtener fecha del input\nconst fecha = $input.item.json.fecha || $input.item.json;\n\n// Si fecha es un objeto, intentar extraer el valor\nlet fechaStr = typeof fecha === 'string' ? fecha : (fecha.fecha || JSON.stringify(fecha));\n\n// Validar formato de fecha\nif (!fechaStr || !/^\\d{4}-\\d{2}-\\d{2}$/.test(fechaStr)) {\n  return { error: 'Fecha inválida. Usa formato YYYY-MM-DD', fecha_recibida: fechaStr };\n}\n\n// Hacer request a la API\nconst response = await fetch(`https://ibonpalacio.com/api/check-availability.php?fecha=${fechaStr}`);\nconst data = await response.json();\n\nreturn data;",
+        "inputs": {
+          "schema": [
             {
-              "name": "fecha",
-              "description": "Fecha para consultar disponibilidad en formato YYYY-MM-DD (ejemplo: 2026-01-20)"
+              "key": "fecha",
+              "type": "string",
+              "description": "Fecha en formato YYYY-MM-DD (ejemplo: 2026-01-20)",
+              "required": true
             }
           ]
-        },
-        "toolDescription": "Consulta las horas disponibles para agendar una cita en una fecha específica. Devuelve las horas disponibles y ocupadas para ese día.",
-        "options": {}
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
-      "typeVersion": 1.1,
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
       "position": [
         -560,
         144
       ],
-      "id": "check_availability-tool-001",
+      "id": "check-availability-code-001",
       "name": "check_availability"
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://ibonpalacio.com/api/send-email.php",
-        "authentication": "none",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\"nombre\": \"{nombre}\", \"correo\": \"{correo}\", \"telefono\": \"{telefono}\", \"fecha\": \"{fecha}\", \"hora\": \"{hora}\", \"asunto\": \"{asunto}\", \"origen\": \"{origen}\"}",
-        "sendQuery": false,
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
+        "name": "create_appointment",
+        "description": "Crea una nueva cita en el sistema y envía email de confirmación. Requiere: nombre, correo, telefono (10 dígitos), fecha (YYYY-MM-DD), hora (HH:MM), asunto ('Conocer el Gimnasio', 'Cita Mentoría' o 'Inscripción Reto Gluteos'), origen.",
+        "jsCode": "// Obtener datos del input\nconst input = $input.item.json;\n\n// Validar campos requeridos\nconst required = ['nombre', 'correo', 'telefono', 'fecha', 'hora', 'asunto'];\nconst missing = required.filter(field => !input[field]);\n\nif (missing.length > 0) {\n  return {\n    success: false,\n    error: 'Faltan campos requeridos: ' + missing.join(', '),\n    campos_recibidos: Object.keys(input)\n  };\n}\n\n// Preparar payload\nconst payload = {\n  nombre: input.nombre,\n  correo: input.correo,\n  telefono: input.telefono,\n  fecha: input.fecha,\n  hora: input.hora,\n  asunto: input.asunto,\n  origen: input.origen || 'chat'\n};\n\n// Hacer request a la API\nconst response = await fetch('https://ibonpalacio.com/api/send-email.php', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify(payload)\n});\n\nconst data = await response.json();\nreturn data;",
+        "inputs": {
+          "schema": [
             {
-              "name": "Content-Type",
-              "value": "application/json"
+              "key": "nombre",
+              "type": "string",
+              "description": "Nombre completo del cliente",
+              "required": true
+            },
+            {
+              "key": "correo",
+              "type": "string",
+              "description": "Email válido para enviar confirmación",
+              "required": true
+            },
+            {
+              "key": "telefono",
+              "type": "string",
+              "description": "Teléfono de 10 dígitos colombiano (empieza con 3)",
+              "required": true
+            },
+            {
+              "key": "fecha",
+              "type": "string",
+              "description": "Fecha de la cita en formato YYYY-MM-DD",
+              "required": true
+            },
+            {
+              "key": "hora",
+              "type": "string",
+              "description": "Hora de la cita en formato HH:MM (de las horas disponibles)",
+              "required": true
+            },
+            {
+              "key": "asunto",
+              "type": "string",
+              "description": "Motivo: 'Conocer el Gimnasio', 'Cita Mentoría' o 'Inscripción Reto Gluteos'",
+              "required": true
+            },
+            {
+              "key": "origen",
+              "type": "string",
+              "description": "Origen: ibon-landing, palacio-fitness, reto-gluteos, by-ibon, whatsapp",
+              "required": false
             }
           ]
-        },
-        "placeholderDefinitions": {
-          "values": [
-            {
-              "name": "nombre",
-              "description": "Nombre completo del cliente"
-            },
-            {
-              "name": "correo",
-              "description": "Email válido para enviar confirmación"
-            },
-            {
-              "name": "telefono",
-              "description": "Teléfono de 10 dígitos colombiano (empieza con 3)"
-            },
-            {
-              "name": "fecha",
-              "description": "Fecha de la cita en formato YYYY-MM-DD"
-            },
-            {
-              "name": "hora",
-              "description": "Hora de la cita en formato HH:MM (de las horas disponibles)"
-            },
-            {
-              "name": "asunto",
-              "description": "Motivo de la cita: 'Conocer el Gimnasio', 'Cita Mentoría' o 'Inscripción Reto Gluteos'"
-            },
-            {
-              "name": "origen",
-              "description": "Origen: ibon-landing, palacio-fitness, reto-gluteos, by-ibon, o whatsapp"
-            }
-          ]
-        },
-        "toolDescription": "Crea una nueva cita en el sistema y envía email de confirmación automático con archivo de calendario.",
-        "options": {}
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
-      "typeVersion": 1.1,
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.2,
       "position": [
         -432,
         144
       ],
-      "id": "create_appointment-tool-001",
+      "id": "create-appointment-code-001",
       "name": "create_appointment"
     }
   ],
@@ -2958,9 +2954,9 @@
       }
     ]
   },
-  "versionId": "e101e022-c7a2-4154-a25b-9915ac63119b",
-  "activeVersionId": "e101e022-c7a2-4154-a25b-9915ac63119b",
-  "versionCounter": 59,
+  "versionId": "24087de5-fe9d-4948-b0a9-abd2ca043321",
+  "activeVersionId": "24087de5-fe9d-4948-b0a9-abd2ca043321",
+  "versionCounter": 61,
   "triggerCount": 1,
   "shared": [
     {
@@ -3031,9 +3027,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-01-15T08:23:08.238Z",
-    "createdAt": "2026-01-15T08:23:08.238Z",
-    "versionId": "e101e022-c7a2-4154-a25b-9915ac63119b",
+    "updatedAt": "2026-01-15T08:39:32.447Z",
+    "createdAt": "2026-01-15T08:39:32.447Z",
+    "versionId": "24087de5-fe9d-4948-b0a9-abd2ca043321",
     "workflowId": "aw1Z0944wtQvvrm7",
     "nodes": [
       {
@@ -5204,92 +5200,88 @@
       },
       {
         "parameters": {
-          "method": "GET",
-          "url": "https://ibonpalacio.com/api/check-availability.php?fecha={fecha}",
-          "authentication": "none",
-          "sendBody": false,
-          "sendQuery": false,
-          "sendHeaders": false,
-          "placeholderDefinitions": {
-            "values": [
+          "name": "check_availability",
+          "description": "Consulta las horas disponibles para agendar una cita en una fecha específica. Requiere el parámetro 'fecha' en formato YYYY-MM-DD (ejemplo: 2026-01-20). Devuelve las horas disponibles y ocupadas para ese día.",
+          "jsCode": "// Obtener fecha del input\nconst fecha = $input.item.json.fecha || $input.item.json;\n\n// Si fecha es un objeto, intentar extraer el valor\nlet fechaStr = typeof fecha === 'string' ? fecha : (fecha.fecha || JSON.stringify(fecha));\n\n// Validar formato de fecha\nif (!fechaStr || !/^\\d{4}-\\d{2}-\\d{2}$/.test(fechaStr)) {\n  return { error: 'Fecha inválida. Usa formato YYYY-MM-DD', fecha_recibida: fechaStr };\n}\n\n// Hacer request a la API\nconst response = await fetch(`https://ibonpalacio.com/api/check-availability.php?fecha=${fechaStr}`);\nconst data = await response.json();\n\nreturn data;",
+          "inputs": {
+            "schema": [
               {
-                "name": "fecha",
-                "description": "Fecha para consultar disponibilidad en formato YYYY-MM-DD (ejemplo: 2026-01-20)"
+                "key": "fecha",
+                "type": "string",
+                "description": "Fecha en formato YYYY-MM-DD (ejemplo: 2026-01-20)",
+                "required": true
               }
             ]
-          },
-          "toolDescription": "Consulta las horas disponibles para agendar una cita en una fecha específica. Devuelve las horas disponibles y ocupadas para ese día.",
-          "options": {}
+          }
         },
-        "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
-        "typeVersion": 1.1,
+        "type": "@n8n/n8n-nodes-langchain.toolCode",
+        "typeVersion": 1.2,
         "position": [
           -560,
           144
         ],
-        "id": "check_availability-tool-001",
+        "id": "check-availability-code-001",
         "name": "check_availability"
       },
       {
         "parameters": {
-          "method": "POST",
-          "url": "https://ibonpalacio.com/api/send-email.php",
-          "authentication": "none",
-          "sendBody": true,
-          "specifyBody": "json",
-          "jsonBody": "={\"nombre\": \"{nombre}\", \"correo\": \"{correo}\", \"telefono\": \"{telefono}\", \"fecha\": \"{fecha}\", \"hora\": \"{hora}\", \"asunto\": \"{asunto}\", \"origen\": \"{origen}\"}",
-          "sendQuery": false,
-          "sendHeaders": true,
-          "headerParameters": {
-            "parameters": [
+          "name": "create_appointment",
+          "description": "Crea una nueva cita en el sistema y envía email de confirmación. Requiere: nombre, correo, telefono (10 dígitos), fecha (YYYY-MM-DD), hora (HH:MM), asunto ('Conocer el Gimnasio', 'Cita Mentoría' o 'Inscripción Reto Gluteos'), origen.",
+          "jsCode": "// Obtener datos del input\nconst input = $input.item.json;\n\n// Validar campos requeridos\nconst required = ['nombre', 'correo', 'telefono', 'fecha', 'hora', 'asunto'];\nconst missing = required.filter(field => !input[field]);\n\nif (missing.length > 0) {\n  return {\n    success: false,\n    error: 'Faltan campos requeridos: ' + missing.join(', '),\n    campos_recibidos: Object.keys(input)\n  };\n}\n\n// Preparar payload\nconst payload = {\n  nombre: input.nombre,\n  correo: input.correo,\n  telefono: input.telefono,\n  fecha: input.fecha,\n  hora: input.hora,\n  asunto: input.asunto,\n  origen: input.origen || 'chat'\n};\n\n// Hacer request a la API\nconst response = await fetch('https://ibonpalacio.com/api/send-email.php', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify(payload)\n});\n\nconst data = await response.json();\nreturn data;",
+          "inputs": {
+            "schema": [
               {
-                "name": "Content-Type",
-                "value": "application/json"
+                "key": "nombre",
+                "type": "string",
+                "description": "Nombre completo del cliente",
+                "required": true
+              },
+              {
+                "key": "correo",
+                "type": "string",
+                "description": "Email válido para enviar confirmación",
+                "required": true
+              },
+              {
+                "key": "telefono",
+                "type": "string",
+                "description": "Teléfono de 10 dígitos colombiano (empieza con 3)",
+                "required": true
+              },
+              {
+                "key": "fecha",
+                "type": "string",
+                "description": "Fecha de la cita en formato YYYY-MM-DD",
+                "required": true
+              },
+              {
+                "key": "hora",
+                "type": "string",
+                "description": "Hora de la cita en formato HH:MM (de las horas disponibles)",
+                "required": true
+              },
+              {
+                "key": "asunto",
+                "type": "string",
+                "description": "Motivo: 'Conocer el Gimnasio', 'Cita Mentoría' o 'Inscripción Reto Gluteos'",
+                "required": true
+              },
+              {
+                "key": "origen",
+                "type": "string",
+                "description": "Origen: ibon-landing, palacio-fitness, reto-gluteos, by-ibon, whatsapp",
+                "required": false
               }
             ]
-          },
-          "placeholderDefinitions": {
-            "values": [
-              {
-                "name": "nombre",
-                "description": "Nombre completo del cliente"
-              },
-              {
-                "name": "correo",
-                "description": "Email válido para enviar confirmación"
-              },
-              {
-                "name": "telefono",
-                "description": "Teléfono de 10 dígitos colombiano (empieza con 3)"
-              },
-              {
-                "name": "fecha",
-                "description": "Fecha de la cita en formato YYYY-MM-DD"
-              },
-              {
-                "name": "hora",
-                "description": "Hora de la cita en formato HH:MM (de las horas disponibles)"
-              },
-              {
-                "name": "asunto",
-                "description": "Motivo de la cita: 'Conocer el Gimnasio', 'Cita Mentoría' o 'Inscripción Reto Gluteos'"
-              },
-              {
-                "name": "origen",
-                "description": "Origen: ibon-landing, palacio-fitness, reto-gluteos, by-ibon, o whatsapp"
-              }
-            ]
-          },
-          "toolDescription": "Crea una nueva cita en el sistema y envía email de confirmación automático con archivo de calendario.",
-          "options": {}
+          }
         },
-        "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
-        "typeVersion": 1.1,
+        "type": "@n8n/n8n-nodes-langchain.toolCode",
+        "typeVersion": 1.2,
         "position": [
           -432,
           144
         ],
-        "id": "create_appointment-tool-001",
+        "id": "create-appointment-code-001",
         "name": "create_appointment"
       }
     ],
