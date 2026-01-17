@@ -94,8 +94,8 @@ Todos los chats de las 4 landings del ecosistema Ibon Palacio estan conectados a
 - **Nombre:** ibon-web
 - **Estado:** Activo
 - **Creado:** 2026-01-10
-- **Actualizado:** 2026-01-15
-- **Total Nodos:** 51
+- **Actualizado:** 2026-01-16
+- **Total Nodos:** 53
 
 ### Arquitectura del Workflow
 
@@ -122,7 +122,13 @@ Todos los chats de las 4 landings del ecosistema Ibon Palacio estan conectados a
                                                                [ElevenLabs TTS]
                                                                               |
                                                                               v
-                                                               [Respond to Webhook]
+                                                               [IF-IsWhatsApp]
+                                                                    |
+                                                         ┌─────────┴─────────┐
+                                                         |                   |
+                                                         v                   v
+                                           [Send-WhatsApp-Response]   [Respond to Webhook]
+                                                   (Evolution API)         (Web chats)
 ```
 
 ### Nodos de Routing por Origen (Switch-Origin)
@@ -197,6 +203,55 @@ La IA puede agendar citas directamente desde el chat usando los tools:
 - `POST https://ibonpalacio.com/api/send-email.php`
 
 **Base de datos:** MySQL `jhtriqfo_ibondata` (tabla `citas`)
+
+### Integracion WhatsApp via Evolution API
+
+El workflow envia respuestas automaticas a WhatsApp usando Evolution API.
+
+**Arquitectura:**
+```
+[Usuario WhatsApp] --> [Evolution API] --> [Webhook n8n] --> [AI Agent]
+                                                                  |
+                                                                  v
+[Usuario WhatsApp] <-- [Evolution API] <-- [Send-WhatsApp-Response]
+```
+
+**Nodos de WhatsApp:**
+
+| Nodo | Tipo | Funcion |
+|------|------|---------|
+| Classify-Source | Code | Detecta si es WhatsApp (`isWhatsApp: true`) y guarda `evolutionUrl`, `evolutionInstance`, `phoneNumber` |
+| IF-IsWhatsApp | IF | Verifica `sourceIsWhatsApp` para determinar canal de respuesta |
+| Send-WhatsApp-Response | HTTP Request | POST a Evolution API para enviar mensaje |
+
+**Configuracion Evolution API:**
+
+| Parametro | Valor |
+|-----------|-------|
+| URL | `https://wa.miclickderecho.com` |
+| Instancia | `ibon-p` |
+| Endpoint | `/message/sendText/ibon-p` |
+| Autenticacion | Header `apikey` |
+| API Key | Configurada en credencial n8n |
+
+**Payload de respuesta:**
+```json
+{
+  "number": "573001234567",
+  "text": "Respuesta del AI Agent"
+}
+```
+
+**Flujo de respuesta:**
+1. Mensaje llega via Evolution API webhook
+2. `Classify-Source` detecta `@s.whatsapp.net` en `remoteJid`
+3. Setea `sourceIsWhatsApp: true`, guarda `phoneNumber`, `evolutionUrl`, `evolutionInstance`
+4. AI Agent procesa y genera respuesta
+5. `IF-IsWhatsApp` verifica si es WhatsApp
+6. Si es WhatsApp: `Send-WhatsApp-Response` envia POST a Evolution API
+7. Si es Web: `Respond to Webhook` envia respuesta al frontend
+
+**Nota:** La credencial `Evolution API Key` debe configurarse en n8n con el apikey correspondiente.
 
 ---
 
@@ -316,7 +371,8 @@ Los backups del workflow se guardan en este repositorio:
 
 | Archivo | Descripcion | Fecha |
 |---------|-------------|-------|
-| `ibon-web.json` | Version actual del workflow | Actualizado |
+| `ibon-web.json` | Version actual del workflow (v4.0) | 2026-01-16 |
+| `ibon-web-backup-2026-01-16-whatsapp-response.json` | Version funcional con respuesta WhatsApp | 2026-01-16 |
 | `ibon-web-backup-2026-01-15-pre-scheduling.json` | Antes de agregar tools de agendamiento | 2026-01-15 |
 | `ibon-web-backup-2026-01-15-switch-origin.json` | Version estable con Switch-Origin | 2026-01-15 |
 
@@ -337,9 +393,10 @@ curl -X PUT "https://flow.miclickderecho.com/api/v1/workflows/aw1Z0944wtQvvrm7" 
 
 ## Ultima Actualizacion
 
-- **Fecha:** 2026-01-15
+- **Fecha:** 2026-01-16
 - **Autor:** Claude Code
-- **Version:** 3.0
+- **Version:** 4.0
 - **Cambios:**
   - v2.0: Implementacion de Switch-Origin con instrucciones y saludos por sitio
   - v3.0: Tools de agendamiento (check-availability, create-appointment) conectados a BD MySQL
+  - v4.0: Respuestas automaticas a WhatsApp via Evolution API (IF-IsWhatsApp, Send-WhatsApp-Response)
