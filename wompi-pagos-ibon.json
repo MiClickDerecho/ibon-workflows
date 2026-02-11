@@ -1,0 +1,251 @@
+{
+  "name": "wompi-pagos-ibon",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "wompi-pagos-ibon",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -200,
+        0
+      ],
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "wompi-pagos-webhook",
+      "webhookId": "a1b2c3d4-0001-4000-8000-000000000010"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  const raw = item.json;\n\n  // Buscar la transaccion en multiples ubicaciones posibles\n  const tx = raw.data?.transaction\n    || raw.body?.data?.transaction\n    || raw.transaction\n    || raw.body?.transaction\n    || {};\n\n  // Buscar sent_at en multiples ubicaciones\n  const sentAtRaw = raw.sent_at || raw.body?.sent_at || '';\n\n  const transactionId = tx.id || '';\n  const reference = tx.reference || '';\n  const status = tx.status || 'UNKNOWN';\n  const amountInCents = tx.amount_in_cents || 0;\n  const customerEmail = tx.customer_email || '';\n  const paymentMethod = tx.payment_method_type || '';\n  const currency = tx.currency || 'COP';\n  const sentAt = sentAtRaw;\n\n  // Formatear monto: centavos a pesos colombianos\n  const amountPesos = amountInCents / 100;\n  const amountFormatted = '$' + amountPesos.toLocaleString('es-CO');\n\n  // Extraer celular del reference (formato: PF-{celular}-{timestamp})\n  let customerPhone = '';\n  const refParts = reference.split('-');\n  if (refParts.length >= 3 && refParts[0] === 'PF') {\n    customerPhone = refParts[1];\n  }\n\n  // Mapear status a espanol + emoji\n  const statusMap = {\n    'APPROVED': { label: 'APROBADO \\u2705', emoji: '\\u2705', verb: 'Aprobado' },\n    'DECLINED': { label: 'RECHAZADO \\u274C', emoji: '\\u274C', verb: 'Rechazado' },\n    'PENDING': { label: 'PENDIENTE \\u23F3', emoji: '\\u23F3', verb: 'Pendiente' },\n    'VOIDED': { label: 'ANULADO \\uD83D\\uDEAB', emoji: '\\uD83D\\uDEAB', verb: 'Anulado' },\n    'ERROR': { label: 'ERROR \\u26A0\\uFE0F', emoji: '\\u26A0\\uFE0F', verb: 'Error' }\n  };\n\n  const statusInfo = statusMap[status] || { label: status, emoji: '\\u2753', verb: status };\n\n  // Generar asunto del correo\n  const emailSubject = `${statusInfo.emoji} Pago ${statusInfo.verb} - ${reference}`;\n\n  // Generar cuerpo HTML del correo\n  const emailBody = `\n<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\">\n  <div style=\"background: #1C1B19; padding: 20px; text-align: center;\">\n    <h1 style=\"color: #FCD462; margin: 0;\">Palacio Fitness</h1>\n    <p style=\"color: #CECECE; margin: 5px 0 0;\">Notificaci\\u00f3n de Pago</p>\n  </div>\n  <div style=\"padding: 20px; background: #f9f9f9;\">\n    <h2 style=\"color: #333;\">${statusInfo.emoji} Pago ${statusInfo.verb}</h2>\n    <table style=\"width: 100%; border-collapse: collapse; margin: 15px 0;\">\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">Referencia</td>\n        <td style=\"padding: 10px;\">${reference}</td>\n      </tr>\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">Monto</td>\n        <td style=\"padding: 10px; font-size: 18px; font-weight: bold;\">${amountFormatted}</td>\n      </tr>\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">Estado</td>\n        <td style=\"padding: 10px;\">${statusInfo.label}</td>\n      </tr>\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">Email cliente</td>\n        <td style=\"padding: 10px;\">${customerEmail}</td>\n      </tr>\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">Celular</td>\n        <td style=\"padding: 10px;\">${customerPhone || 'No disponible'}</td>\n      </tr>\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">M\\u00e9todo de pago</td>\n        <td style=\"padding: 10px;\">${paymentMethod}</td>\n      </tr>\n      <tr style=\"border-bottom: 1px solid #ddd;\">\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">ID Transacci\\u00f3n</td>\n        <td style=\"padding: 10px; font-size: 12px;\">${transactionId}</td>\n      </tr>\n      <tr>\n        <td style=\"padding: 10px; font-weight: bold; color: #555;\">Fecha</td>\n        <td style=\"padding: 10px;\">${sentAt ? new Date(sentAt).toLocaleString('es-CO', { timeZone: 'America/Bogota' }) : 'N/A'}</td>\n      </tr>\n    </table>\n  </div>\n  <div style=\"background: #1C1B19; padding: 15px; text-align: center;\">\n    <p style=\"color: #CECECE; margin: 0; font-size: 12px;\">Palacio Fitness - Gimnasio exclusivo para mujeres</p>\n  </div>\n</div>`;\n\n  // Generar mensaje de WhatsApp segun estado\n  let whatsappText = '';\n  switch (status) {\n    case 'APPROVED':\n      whatsappText = `\\u2705 *Palacio Fitness - Pago Confirmado*\\n\\nHola! Tu pago por *${amountFormatted}* ha sido *aprobado* exitosamente.\\n\\nReferencia: ${reference}\\n\\nGracias por tu pago. \\u00a1Te esperamos en el gym! \\uD83D\\uDCAA\\n\\nSi tienes alguna duda, escr\\u00edbenos por este chat.`;\n      break;\n    case 'DECLINED':\n      whatsappText = `\\u274C *Palacio Fitness - Pago Rechazado*\\n\\nHola, tu pago por *${amountFormatted}* fue *rechazado* por la entidad financiera.\\n\\nReferencia: ${reference}\\n\\nPor favor intenta nuevamente o usa otro m\\u00e9todo de pago en:\\nhttps://fitness.ibonpalacio.com/pagos\\n\\nSi necesitas ayuda, escr\\u00edbenos.`;\n      break;\n    case 'PENDING':\n      whatsappText = `\\u23F3 *Palacio Fitness - Pago Pendiente*\\n\\nHola, tu pago por *${amountFormatted}* est\\u00e1 *pendiente* de confirmaci\\u00f3n.\\n\\nReferencia: ${reference}\\n\\nTe notificaremos cuando se confirme. Si tienes dudas, escr\\u00edbenos.`;\n      break;\n    case 'VOIDED':\n      whatsappText = `\\uD83D\\uDEAB *Palacio Fitness - Pago Anulado*\\n\\nHola, tu pago por *${amountFormatted}* ha sido *anulado*.\\n\\nReferencia: ${reference}\\n\\nSi no solicitaste esta anulaci\\u00f3n, por favor cont\\u00e1ctanos.`;\n      break;\n    case 'ERROR':\n      whatsappText = `\\u26A0\\uFE0F *Palacio Fitness - Error en Pago*\\n\\nHola, hubo un *error* procesando tu pago por *${amountFormatted}*.\\n\\nReferencia: ${reference}\\n\\nPor favor intenta nuevamente en:\\nhttps://fitness.ibonpalacio.com/pagos\\n\\nSi el problema persiste, escr\\u00edbenos.`;\n      break;\n    default:\n      whatsappText = `\\u2753 *Palacio Fitness - Actualizaci\\u00f3n de Pago*\\n\\nHola, tu pago por *${amountFormatted}* tiene estado: *${status}*.\\n\\nReferencia: ${reference}\\n\\nSi tienes dudas, escr\\u00edbenos.`;\n  }\n\n  results.push({\n    json: {\n      transactionId,\n      reference,\n      status,\n      amountInCents,\n      amountFormatted,\n      customerEmail,\n      customerPhone,\n      paymentMethod,\n      currency,\n      sentAt,\n      statusLabel: statusInfo.label,\n      emailSubject,\n      emailBody,\n      whatsappText,\n      clientEmailSubject: `${statusInfo.emoji} Tu pago en Palacio Fitness - ${statusInfo.verb}`,\n      clientEmailBody: `<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;\"><div style=\"background: #1C1B19; padding: 30px; text-align: center;\"><h1 style=\"color: #FCD462; margin: 0; font-size: 28px;\">Palacio Fitness</h1><p style=\"color: #CECECE; margin: 8px 0 0; font-size: 14px;\">Gimnasio exclusivo para mujeres</p></div><div style=\"padding: 30px; background: #ffffff;\"><div style=\"text-align: center; margin-bottom: 25px;\"><span style=\"font-size: 48px;\">${statusInfo.emoji}</span><h2 style=\"color: #333; margin: 10px 0 5px;\">Pago ${statusInfo.verb}</h2><p style=\"color: #666; font-size: 28px; font-weight: bold; margin: 5px 0;\">${amountFormatted}</p></div><div style=\"background: #f8f8f8; border-radius: 8px; padding: 20px; margin: 20px 0;\"><table style=\"width: 100%; border-collapse: collapse;\"><tr><td style=\"padding: 8px 0; color: #888; font-size: 13px;\">Referencia</td><td style=\"padding: 8px 0; text-align: right; color: #333; font-size: 13px;\">${reference}</td></tr><tr><td style=\"padding: 8px 0; color: #888; font-size: 13px;\">M\\u00e9todo</td><td style=\"padding: 8px 0; text-align: right; color: #333; font-size: 13px;\">${paymentMethod}</td></tr><tr><td style=\"padding: 8px 0; color: #888; font-size: 13px;\">Fecha</td><td style=\"padding: 8px 0; text-align: right; color: #333; font-size: 13px;\">${sentAt ? new Date(sentAt).toLocaleString('es-CO', { timeZone: 'America/Bogota' }) : 'N/A'}</td></tr></table></div>${status === 'APPROVED' ? '<p style=\"color: #333; text-align: center;\">Gracias por tu pago. \\u00a1Te esperamos en el gym! \\uD83D\\uDCAA</p>' : status === 'DECLINED' ? '<p style=\"color: #333; text-align: center;\">Tu pago fue rechazado. Por favor intenta con otro m\\u00e9todo de pago.</p>' : status === 'PENDING' ? '<p style=\"color: #333; text-align: center;\">Tu pago est\\u00e1 pendiente de confirmaci\\u00f3n. Te notificaremos cuando se procese.</p>' : '<p style=\"color: #333; text-align: center;\">Si tienes dudas sobre tu pago, cont\\u00e1ctanos.</p>'}<p style=\"text-align: center; margin-top: 25px;\"><a href=\"https://fitness.ibonpalacio.com\" style=\"background: #FCD462; color: #1C1B19; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;\">Ir a Palacio Fitness</a></p></div><div style=\"background: #1C1B19; padding: 20px; text-align: center;\"><p style=\"color: #888; margin: 0; font-size: 12px;\">Palacio Fitness - Laureles, Medell\\u00edn</p><p style=\"color: #666; margin: 5px 0 0; font-size: 11px;\">Este correo fue enviado autom\\u00e1ticamente. No responder.</p></div></div>`\n    }\n  });\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        100,
+        0
+      ],
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Extract-Payment-Data"
+    },
+    {
+      "parameters": {
+        "fromEmail": "notificaciones@ibonpalacio.com",
+        "toEmail": "pagos@ibonpalacio.com",
+        "subject": "={{ $json.emailSubject }}",
+        "emailFormat": "html",
+        "html": "={{ $json.emailBody }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        -120
+      ],
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Send-Email-Notification",
+      "credentials": {
+        "smtp": {
+          "id": "7gQzdbdzAqX0qVdJ",
+          "name": "SMTP Notificaciones Ibon"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "notificaciones@ibonpalacio.com",
+        "toEmail": "={{ $json.customerEmail }}",
+        "subject": "={{ $json.clientEmailSubject }}",
+        "emailFormat": "html",
+        "html": "={{ $json.clientEmailBody }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        440,
+        -260
+      ],
+      "id": "a1b2c3d4-0007-4000-8000-000000000007",
+      "name": "Send-Email-Clienta",
+      "credentials": {
+        "smtp": {
+          "id": "7gQzdbdzAqX0qVdJ",
+          "name": "SMTP Notificaciones Ibon"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "condition-phone-exists",
+              "leftValue": "={{ $json.customerPhone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        440,
+        120
+      ],
+      "id": "a1b2c3d4-0006-4000-8000-000000000006",
+      "name": "IF-Has-Phone"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://wa.miclickderecho.com/message/sendText/ibon-p",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"57{{ $json.customerPhone }}\",\n  \"text\": {{ JSON.stringify($json.whatsappText) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        720,
+        80
+      ],
+      "id": "a1b2c3d4-0004-4000-8000-000000000004",
+      "name": "Send-WhatsApp-Clienta",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "EctEalvEB1cbvfzj",
+          "name": "Evolution API Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"status\": \"ok\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1000,
+        0
+      ],
+      "id": "a1b2c3d4-0005-4000-8000-000000000005",
+      "name": "Respond-OK"
+    }
+  ],
+  "connections": {
+    "wompi-pagos-webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract-Payment-Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract-Payment-Data": {
+      "main": [
+        [
+          {
+            "node": "Send-Email-Notification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send-Email-Clienta",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "IF-Has-Phone",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send-Email-Notification": {
+      "main": [
+        [
+          {
+            "node": "Respond-OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send-Email-Clienta": {
+      "main": [
+        [
+          {
+            "node": "Respond-OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF-Has-Phone": {
+      "main": [
+        [
+          {
+            "node": "Send-WhatsApp-Clienta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond-OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send-WhatsApp-Clienta": {
+      "main": [
+        [
+          {
+            "node": "Respond-OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "00000000-0000-4000-8000-000000000000",
+  "triggerCount": 0
+}
